@@ -1,0 +1,97 @@
+<html>
+
+<head>
+	<style type="text/css">
+		body {
+			margin: 0;
+			padding: 0;
+		}
+
+		#particle-canvas {
+			width: 100%;
+			height: 100%;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="particle-canvas"></div>
+	<script type="text/javascript" src="particle-network.js"></script>
+	<script type="text/javascript">
+		var canvasDiv = document.getElementById('particle-canvas');
+		var options = {
+			particleColor: '#f533ff',
+			// background: 'img/MicrosoftTeams-image.png', #ff337a   f533ff   ff334b  3363ff
+			interactive: true,
+			speed: 'high',
+			density: 'low'
+		};
+		// var particleCanvas = new ParticleNetwork(canvasDiv, options);
+
+		let myPromise = new Promise(function (myResolve, myReject) {
+			let req = new XMLHttpRequest();
+			req.overrideMimeType("application/json");
+			req.open('GET', "butterflyCoordinator.json");
+
+			req.onload = function () {
+
+				if (req.status == 200) {
+					myResolve(req.responseText);
+
+				} else {
+					myReject("File not Found");
+
+				}
+
+			};
+
+			req.send();
+		});
+
+		myPromise.then(
+			function (butterFlyCoordinate) {
+
+				var particleCanvas = new ParticleNetwork(canvasDiv, options, JSON.parse(butterFlyCoordinate));
+
+			},
+			function (error) { }
+		);
+
+		// const fs = require('fs');
+
+		function printMousePos(event) {
+
+			console.log("this.ctx.lineTo(" + event.clientX + ", " + event.clientY + ");");
+			// console.log("[" + event.clientX + "," + event.clientY + "],");
+			// console.log(
+			// 	"if (this.x > " + event.clientX + " || this.x < -80) {this.velocity.x = -this.velocity.x;}"
+			// 	+ "\n if (this.y > " + event.clientY + "  || this.y < -80) {this.velocity.y = -this.velocity.y;}"
+			// );
+
+
+			// let data = "[" + event.clientX + "," + event.clientY + "],";
+
+			// fs.writeFile('Output.txt', data, (err) => {
+			// 	console.log(err);
+			// });
+
+			// data = "if (this.x > " + event.clientX + " || this.x < -80) {this.velocity.x = -this.velocity.x;}"
+			// 	+ "\n if (this.y > " + event.clientY + "  || this.y < -80) {this.velocity.y = -this.velocity.y;}";
+
+			// fs.writeFile('Output1.txt', data, (err) => {
+			// 	console.log(err);
+			// });
+
+			// console.log("this.ctx.lineTo(" + event.clientX  + ", " + event.clientY + ");");
+
+		}
+
+		document.addEventListener("click", printMousePos);
+
+	</script>
+</body>
+
+</html>
+
+
+his.y < -80) {this.velocity.y = -this.velocity.y;}
